@@ -10,5 +10,11 @@
     <string name="querystring">are you OK?</string>
     <string name="querylistprompt">These people want to know if you\'re OK</string>
     <string name="includelocationprompt">Include Location in Reply</string>
+    <string name="user_preferences">com.example.emergencyresponder.preferences</string>
+    <string name="respondWithPrompt">Respond with</string>
+    <string name="transmitLocationPrompt">Transmit location</string>
+    <string name="autoRespondDurationPrompt">Auto-respond for</string>
+    <string name="enableButtonText">Enable</string>
+    <string name="disableButtonText">Disable</string>
 
 </resources>

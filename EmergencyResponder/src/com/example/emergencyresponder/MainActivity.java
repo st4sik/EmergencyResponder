@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
 		});
 
 		Button autoResponderButton = (Button) findViewById(R.id.autoResponder);
-		okButton.setOnClickListener(new View.OnClickListener() {
+		autoResponderButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				statAutoResponder();
@@ -78,7 +79,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void statAutoResponder() {
-		// TODO Auto-generated method stub
+		startActivityForResult(new Intent(MainActivity.this,AutoResponder.class), 0);
+		
 
 	}
 
@@ -205,6 +207,17 @@ public class MainActivity extends Activity {
 			aa.notifyDataSetChanged();
 			lock.unlock();
 		}
+		String prefernceName=getString(R.string.user_preferences);
+		SharedPreferences prefs=getSharedPreferences(prefernceName, 0);
+		
+		boolean autoRespond=prefs.getBoolean(AutoResponder.autoResponsePref, false);
+		
+		if(autoRespond)
+		{
+			String respondText=prefs.getString(AutoResponder.responseTextPref, AutoResponder.defaultResponseText);
+			boolean includeLoc=prefs.getBoolean(AutoResponder.includeLocPref, false);
+			respond(originatingAddress,respondText,includeLoc);
+		}
 
 	}
 
@@ -213,10 +226,10 @@ public class MainActivity extends Activity {
 		super.onResume();
 		IntentFilter filter = new IntentFilter(SMS_RECEIVED);
 		registerReceiver(emergencyResponseRequestReceiver, filter);
-		
-		IntentFilter attemptedDeliviryfilter=new IntentFilter(SENT_SMS);
+
+		IntentFilter attemptedDeliviryfilter = new IntentFilter(SENT_SMS);
 		registerReceiver(attemptedDeliveryReceiver, attemptedDeliviryfilter);
-		
+
 	}
 
 	@Override
